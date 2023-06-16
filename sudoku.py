@@ -374,15 +374,19 @@ def calculateSolution(board):
     a = board.astype(object).copy()
     previous_a = np.zeros((9,9), dtype=object)
 
+    # while new board is not equal to old board
     while not arrays_equal(a, previous_a):
+        # save the previous board
         previous_a = a.astype(object).copy()
 
+        # find all possible values for each cell
         while True:
             new_a = findPossiblities(a)
             if arrays_equal(new_a, a):
                 break
             a = new_a.astype(object).copy()
 
+        # find any cells that can be figured out by process of elimination
         a = elimination(a)
     return a
 
