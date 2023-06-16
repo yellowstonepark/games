@@ -4,23 +4,25 @@ import time
 
 # 0 represents empty cells
 # 1-9 represents the numbers in the cells
-# any valid sudoku puzzle
+# valid sudoku puzzles taken from an official sudoku app
 
-#super easy
-board = np.array([
-    [5, 3, 0, 0, 7, 0, 0, 0, 0],
+boards = [
+
+#super easy - board 1
+np.array([
+    [5, 3, 4, 0, 7, 0, 0, 0, 2],
     [6, 0, 0, 1, 9, 5, 0, 0, 0],
     [0, 9, 8, 0, 0, 0, 0, 6, 0],
     [8, 0, 0, 0, 6, 0, 0, 0, 3],
     [4, 0, 0, 8, 0, 3, 0, 0, 1],
     [7, 0, 0, 0, 2, 0, 0, 0, 6],
     [0, 6, 0, 0, 0, 0, 2, 8, 0],
-    [0, 0, 0, 4, 1, 9, 0, 0, 5],
-    [0, 0, 0, 0, 8, 0, 0, 7, 9]
-], dtype=object)
+    [0, 0, 0, 4, 1, 9, 6, 0, 5],
+    [0, 0, 0, 0, 8, 0, 1, 7, 9]
+], dtype=object),
 
-#easy
-board = np.array([
+#easy - board 2
+np.array([
     [0, 7, 9, 3, 0, 0, 0, 0, 0],
     [3, 0, 2, 0, 0, 0, 5, 0, 7],
     [0, 0, 0, 0, 0, 1, 0, 9, 0],
@@ -30,10 +32,10 @@ board = np.array([
     [0, 6, 0, 0, 0, 3, 1, 0, 9],
     [0, 0, 0, 5, 0, 6, 8, 7, 0],
     [2, 0, 0, 7, 0, 0, 0, 0, 0]
-], dtype=object)
+], dtype=object),
 
-#medium
-board = np.array([
+#medium - board 3
+np.array([
     [4, 0, 0, 9, 6, 2, 0, 0, 0],
     [7, 6, 0, 0, 0, 5, 0, 2, 0],
     [0, 0, 8, 0, 7, 0, 0, 0, 1],
@@ -43,10 +45,10 @@ board = np.array([
     [0, 0, 2, 0, 0, 0, 9, 8, 4],
     [8, 0, 0, 0, 0, 0, 2, 0, 0],
     [5, 0, 9, 0, 2, 7, 0, 0, 0]
-], dtype=object)
+], dtype=object),
 
-#hard
-board = np.array([
+#hard - board 4
+np.array([
     [0, 4, 1, 0, 6, 2, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 9],
     [0, 9, 0, 0, 0, 4, 5, 6, 0],
@@ -56,11 +58,10 @@ board = np.array([
     [0, 0, 7, 0, 3, 1, 0, 8, 0],
     [0, 8, 3, 0, 0, 0, 2, 0, 0],
     [0, 0, 4, 0, 2, 0, 0, 0, 0]
-], dtype=object)
+], dtype=object),
 
-#expert
-
-board = np.array([
+#expert - board 5
+np.array([
     [0, 2, 9, 1, 0, 0, 0, 6, 0],
     [0, 7, 0, 0, 0, 0, 0, 0, 5],
     [0, 0, 1, 3, 0, 4, 0, 0, 0],
@@ -70,10 +71,10 @@ board = np.array([
     [0, 9, 0, 0, 0, 0, 2, 0, 0],
     [0, 0, 0, 2, 0, 0, 0, 0, 0],
     [8, 0, 0, 0, 0, 0, 0, 5, 7]
-], dtype=object)
+], dtype=object),
 
-#evil
-board = np.array([
+#evil - board 6
+np.array([
     [0, 9, 3, 4, 7, 0, 0, 6, 0],
     [0, 8, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 6, 0, 0, 0, 0, 1],
@@ -83,10 +84,10 @@ board = np.array([
     [0, 0, 0, 0, 0, 5, 2, 0, 0],
     [0, 6, 7, 0, 9, 0, 0, 1, 0],
     [4, 0, 0, 0, 0, 0, 0, 0, 0]
-], dtype=object)
+], dtype=object),
     
-# another evil
-board = np.array([
+# another evil - board 7
+np.array([
     [4, 1, 0, 0, 0, 6, 0, 0, 0],
     [0, 9, 0, 0, 7, 0, 5, 0, 1],
     [0, 0, 0, 0, 0, 0, 0, 2, 0],
@@ -98,19 +99,76 @@ board = np.array([
     [0, 0, 0, 0, 0, 0, 0, 0, 3]
 ], dtype=object)
 
+]
+
+board_num = None
+
+while board_num not in range(1, 9):
+    board_num = input("Enter a difficulty (1-7), or 8 to make your own board: ")
+    try:
+        board_num = int(board_num)
+    except:
+        print("Please enter a number")
+    if board_num == 8:
+        board = np.zeros((9,9), dtype=object)
+        print("The program assumes that you use a valid sudoku board.")
+        for row in range(board.shape[0]):
+            for number in range(board.shape[1]):
+                value = None
+                while value not in range(0, 10):
+                    value = input("Enter a number for row " + str(row + 1) + " column " + str(number + 1) + ". You can input 0 for empty values: ")
+                    try:
+                        value = int(value)
+                    except:
+                        print("Please enter a number")
+                board[row, number] = value
+        break
+    else:
+        board = boards[board_num - 1]
+
+original_board = board.copy()
+
+# convert all 0s to numpy arrays
 for row in range(board.shape[0]):
     for number in range(board.shape[1]):
         value = board[row, number]
         if value == 0:
             board[row, number] = np.array([0])
 
-print(type(board[0,2]))
-print(type(board[0,0]))
-
 possible_values = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9])
 
+# array -> array
+# check to see if any cells can be figured out by process of elimination
+# test:
+'''
+[[4 1 array([2, 8]) array([2, 5, 8]) array([2, 5]) 6 3 9 7]
+ [array([2, 3, 6]) 9 array([2, 3, 6]) array([2, 3]) 7 4 5 8 1]
+ [5 array([3, 8]) 7 1 9 array([3, 8]) 4 2 6]
+ [array([1, 6]) array([4, 6]) array([4, 6]) array([2, 5, 6, 9]) 8 7
+  array([1, 9]) 3 array([4, 5])]
+ [9 7 5 4 3 1 2 6 8]
+ [array([1, 3, 6, 8]) 2 array([3, 4, 6, 8]) array([5, 6, 9])
+  array([5, 6]) array([5, 9]) array([1, 9]) 7 array([4, 5])]
+ [array([2, 3, 6, 7]) 5 array([2, 3, 6]) array([2, 3, 6]) 1 array([2, 3])
+  8 4 9]
+ [array([3, 8]) array([3, 8]) 1 7 4 array([3, 8, 9]) 6 5 2]
+ [array([2, 6, 8]) array([4, 6, 8]) 9 array([2, 5, 6, 8])
+  array([2, 5, 6]) array([2, 5, 8]) 7 1 3]]
+[[4 1 array([2, 8]) array([2, 5, 8]) array([2, 5]) 6 3 9 7]
+ [array([2, 3, 6]) 9 array([2, 3, 6]) array([2, 3]) 7 4 5 8 1]
+ [5 array([3, 8]) 7 1 9 array([3, 8]) 4 2 6]
+ [array([1, 6]) array([4, 6]) array([4, 6]) 2 8 7 array([1, 9]) 3
+  array([4, 5])]
+ [9 7 5 4 3 1 2 6 8]
+ [array([1, 3, 6, 8]) 2 array([3, 4, 6, 8]) array([5, 6, 9])
+  array([5, 6]) array([5, 9]) array([1, 9]) 7 array([4, 5])]
+ [array([2, 3, 6, 7]) 5 array([2, 3, 6]) array([2, 3, 6]) 1 array([2, 3])
+  8 4 9]
+ [array([3, 8]) array([3, 8]) 1 7 4 array([3, 8, 9]) 6 5 2]
+ [array([2, 6, 8]) array([4, 6, 8]) 9 array([2, 5, 6, 8])
+  array([2, 5, 6]) array([2, 5, 8]) 7 1 3]]
+'''
 def elimination(possiblities):
-    # check to see if any cells can be figured out by process of elimination
     changed = False
     for row in range(possiblities.shape[0]):
         if changed == True:
@@ -167,6 +225,38 @@ def elimination(possiblities):
 
 # find all possible values for each cell
 # numpy array -> numpy array
+# test:
+'''
+[[array([3, 4, 5]) 2 9 1 array([5, 7, 8]) array([5, 7, 8])
+  array([3, 4, 7]) 6 3]
+ [array([3, 4, 6]) 7 8 9 array([2, 6]) array([2, 6]) array([1, 3, 4])
+  array([1, 2, 3, 4]) 5]
+ [array([5, 6]) array([5, 6]) 1 3 array([2, 5, 6, 7]) 4 array([7, 9])
+  array([2, 7, 9]) 8]
+ [array([1, 2, 4, 6, 7]) array([1, 4, 6, 8]) 3 array([7, 8])
+  array([1, 2, 7, 8]) array([1, 2, 7, 8]) 5 array([1, 4, 7]) 9]
+ [array([1, 2, 5, 7, 9]) array([1, 5]) array([5, 7]) 6 4
+  array([1, 2, 7, 9]) 8 array([1, 3, 7]) array([1, 3])]
+ [array([1, 4, 7, 9]) array([1, 4, 8]) array([4, 7]) 5 3
+  array([1, 7, 8, 9]) 6 array([1, 4, 7]) 2]
+ [array([1, 3, 4, 5, 6, 7]) 9 array([4, 5, 6, 7]) array([7, 8])
+  array([1, 5, 6, 7, 8]) array([1, 3, 5, 6, 7, 8]) 2 array([1, 3, 4, 8])
+  array([1, 3, 4, 6])]
+ [array([1, 3, 4, 5, 6, 7]) array([1, 3, 4, 5, 6]) array([4, 5, 6, 7]) 2
+  array([1, 5, 6, 7, 8, 9]) array([1, 3, 5, 6, 7, 8, 9])
+  array([1, 3, 4, 9]) array([1, 3, 4, 8, 9]) array([1, 3, 4, 6])]
+ [8 array([1, 3, 6]) 2 4 array([1, 6, 9]) array([1, 3, 6, 9])
+  array([1, 3, 9]) 5 7]]
+[[4 2 9 1 8 5 7 6 3]
+ [3 7 8 9 6 2 4 1 5]
+ [5 6 1 3 7 4 9 2 8]
+ [6 1 3 8 2 7 5 4 9]
+ [2 5 7 6 4 9 8 3 1]
+ [9 8 4 5 3 1 6 7 2]
+ [1 9 6 7 5 3 2 8 4]
+ [7 4 5 2 1 8 3 9 6]
+ [8 3 2 4 9 6 1 5 7]]
+'''
 def findPossiblities(board):
     possiblities = np.zeros((9,9), dtype=object)
 
@@ -210,7 +300,7 @@ def findPossiblities(board):
                         for item2 in range(square.shape[1]):
                             if isinstance (square[item, item2], np.ndarray) == True:
                                 square[item, item2] = 0
-                    #print(square)
+
                     unique_square = np.unique(square)
 
                     # find all values the number cannot be
@@ -223,29 +313,54 @@ def findPossiblities(board):
                     if possible.shape == (1,):
                         possiblities[row, number] = possible[0]
                     else:
+                        # if there are multiple possible values, set it to an array
                         possiblities[row, number] = possible
 
                 else:
                     print("Error")
-        #print(possiblities)
-
-        #ifnosolution = noSolution(possiblities)
-        #if ifnosolution == True:
-        #    return "No Solution"
-
-        #possiblities = elimination(possiblities)
 
         prev_board_zeros, possibilities_zeros = convert_arrays_to_zeros(prev_board), convert_arrays_to_zeros(possiblities)
         if np.array_equal(prev_board_zeros, possibilities_zeros):
             break
 
         prev_board = possiblities.copy()
-        
-
+    
     return possiblities
 
-# calculate solution
-
+# arr -> arr
+# use many functions to narrow the possbilites down to one solution
+# test: 
+'''
+[[array([3, 4, 5]) 2 9 1 array([5, 7, 8]) array([5, 7, 8])
+  array([3, 4, 7]) 6 3]
+ [array([3, 4, 6]) 7 8 9 array([2, 6]) array([2, 6]) array([1, 3, 4])
+  array([1, 2, 3, 4]) 5]
+ [array([5, 6]) array([5, 6]) 1 3 array([2, 5, 6, 7]) 4 array([7, 9])
+  array([2, 7, 9]) 8]
+ [array([1, 2, 4, 6, 7]) array([1, 4, 6, 8]) 3 array([7, 8])
+  array([1, 2, 7, 8]) array([1, 2, 7, 8]) 5 array([1, 4, 7]) 9]
+ [array([1, 2, 5, 7, 9]) array([1, 5]) array([5, 7]) 6 4
+  array([1, 2, 7, 9]) 8 array([1, 3, 7]) array([1, 3])]
+ [array([1, 4, 7, 9]) array([1, 4, 8]) array([4, 7]) 5 3
+  array([1, 7, 8, 9]) 6 array([1, 4, 7]) 2]
+ [array([1, 3, 4, 5, 6, 7]) 9 array([4, 5, 6, 7]) array([7, 8])
+  array([1, 5, 6, 7, 8]) array([1, 3, 5, 6, 7, 8]) 2 array([1, 3, 4, 8])
+  array([1, 3, 4, 6])]
+ [array([1, 3, 4, 5, 6, 7]) array([1, 3, 4, 5, 6]) array([4, 5, 6, 7]) 2
+  array([1, 5, 6, 7, 8, 9]) array([1, 3, 5, 6, 7, 8, 9])
+  array([1, 3, 4, 9]) array([1, 3, 4, 8, 9]) array([1, 3, 4, 6])]
+ [8 array([1, 3, 6]) 2 4 array([1, 6, 9]) array([1, 3, 6, 9])
+  array([1, 3, 9]) 5 7]]
+[[4 2 9 1 8 5 7 6 3]
+ [3 7 8 9 6 2 4 1 5]
+ [5 6 1 3 7 4 9 2 8]
+ [6 1 3 8 2 7 5 4 9]
+ [2 5 7 6 4 9 8 3 1]
+ [9 8 4 5 3 1 6 7 2]
+ [1 9 6 7 5 3 2 8 4]
+ [7 4 5 2 1 8 3 9 6]
+ [8 3 2 4 9 6 1 5 7]]
+'''
 def calculateSolution(board):
     def arrays_equal(a, b):
         for row in range(a.shape[0]):
@@ -265,16 +380,16 @@ def calculateSolution(board):
         while True:
             new_a = findPossiblities(a)
             if arrays_equal(new_a, a):
-                #print("ffjkldfsjflksdjflksdjflkdsfjskldjfskldjgklsdfjsdklfjdslkjfklsdjfslkdfjsdk")
                 break
             a = new_a.astype(object).copy()
-            #time.sleep(1)
 
         a = elimination(a)
-
     return a
 
-
+# arr -> bool
+# check if there are any empty cells
+# test: noSolution(np.array([[1, 2, 3], [4, 5, np.array()], [7, 8, 9]])) -> True
+# test: noSolution(np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])) -> False
 def noSolution(possiblities):
     empty_arr = np.array([])
     for row in range(possiblities.shape[0]):
@@ -284,6 +399,10 @@ def noSolution(possiblities):
                 return True
     return False
 
+# arr -> arr
+# convert all arrays in the array to 0s
+# test: convert_arrays_to_zeros(np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])) -> np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+# test: convert_arrays_to_zeros(np.array([[1, 2, 3], [4, np.array([5, 6]), 7], [8, 9, 10]])) -> np.array([[1, 2, 3], [4, 0, 7], [8, 9, 10]])
 def convert_arrays_to_zeros(arr):
     # avoid modifying the original arrays
     arrr = arr.copy()
@@ -298,6 +417,10 @@ def convert_arrays_to_zeros(arr):
 
     return arrr
 
+# arr -> bool
+# check if there are any arrays in the array
+# test: has_arrays(np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])) -> False
+# test: has_arrays(np.array([[1, 2, 3], [4, np.array([5, 6]), 7], [8, 9, 10]])) -> True
 def has_arrays(arr):
     for row in arr:
         for element in row:
@@ -305,11 +428,41 @@ def has_arrays(arr):
                 return True
     return False
 
+# arr + int -> arr
+# find the solution by seeing what works
+# test: findSolution(np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]]), 1) -> np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+# test: 
+'''
+4 1 0 | 0 0 6 | 0 0 0 
+0 9 0 | 0 7 0 | 5 0 1 
+0 0 0 | 0 0 0 | 0 2 0 
+---------------------
+0 0 0 | 0 8 0 | 0 3 0 
+9 0 0 | 4 0 0 | 2 0 8 
+0 2 0 | 0 0 0 | 0 7 0 
+---------------------
+0 5 0 | 0 1 0 | 8 0 9 
+0 0 1 | 7 0 0 | 0 0 0 
+0 0 0 | 0 0 0 | 0 0 3 
 
+ |
+ v
+
+ 4 1 8 | 5 2 6 | 3 9 7 
+2 9 6 | 3 7 4 | 5 8 1 
+5 3 7 | 1 9 8 | 4 2 6 
+---------------------
+1 6 4 | 2 8 7 | 9 3 5 
+9 7 5 | 4 3 1 | 2 6 8 
+8 2 3 | 9 6 5 | 1 7 4 
+---------------------
+7 5 2 | 6 1 3 | 8 4 9 
+3 8 1 | 7 4 9 | 6 5 2 
+6 4 9 | 8 5 2 | 7 1 3 
+'''
 def findSolution(board, max_iterations):
     counter = 0
     orginal_possible = calculateSolution(board)
-    #print(orginal_possible)
     after_attempt = orginal_possible.copy()
     for i in range(9):
         #if the board is solved, return it on the first try
@@ -337,8 +490,40 @@ def findSolution(board, max_iterations):
 
 start_time = time.time()
 
-possibilitiess = findSolution(board, 7)
+possibilitiess = findSolution(board, 8)
 
-print(possibilitiess)
+# print the board
+# test: printBoard(np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])) -> 
+# 1 2 3
+# 4 5 6
+# 7 8 9
+def printBoard(numpy_array):
+    for row in range(numpy_array.shape[0]):
+        if row % 3 == 0 and row != 0:
+            print("-" * 21)
+        for number in range(numpy_array.shape[1]):
+            if number % 3 == 0 and number != 0:
+                print("|", end = " ")
+            value = numpy_array[row, number]
+            if isinstance(value, np.ndarray) == True:
+                print("0", end = " ")
+            else:
+                print(value, end = " ")
+        print("")
 
-print("--- %s seconds ---" % (time.time() - start_time))
+if isinstance(possibilitiess, np.ndarray) == True:
+    # 0s represent unknown values
+    print("Original board:")
+    printBoard(original_board)
+    print("", end = "\n\n")
+
+    print("Solution:")
+    printBoard(possibilitiess)
+
+    print("--- %s seconds ---" % round((time.time() - start_time), 2))
+else:
+    # 0s represent unknown values
+    print("Original board:")
+    printBoard(original_board)
+    print("", end = "\n\n")
+    print(possibilitiess)
